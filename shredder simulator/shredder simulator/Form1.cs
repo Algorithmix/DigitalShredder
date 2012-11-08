@@ -54,6 +54,11 @@ namespace shredder_simulator
             return this.fileTextbox.Text;
         }
 
+        public string getFolderDest()
+        {
+            return this.folderTextbox.Text;
+        }
+
         public int getVertSlice()
         {
             return (int)vertUpDown.Value;

@@ -12,6 +12,7 @@ namespace shredder_simulator
         private Bitmap input, sliceMap, sliceMap2;
         private int vertSlice, horSlice, maxDimension;
         private double maxDisplacement;
+        private string folderDest;
 
 
         public Shredder(shredsimForm Form)
@@ -20,6 +21,7 @@ namespace shredder_simulator
             vertSlice = Form.getVertSlice();
             horSlice = Form.getHorSlice();
             maxDimension = Math.Max(input.Width, input.Height);
+            folderDest = Form.getFolderDest();
         }
 
         public void makeSliceMap()
@@ -217,26 +219,28 @@ namespace shredder_simulator
         {
             Bitmap[,] shreds = new Bitmap[vertSlice + 1, horSlice + 1];
 
-            int shredWidth = (int)((input.Width / (vertSlice + 1)) + maxDimension * 0.02);
-            int shredHeight = (int)((input.Height / (horSlice + 1)) + maxDimension * 0.02);
-            Bitmap shred = new Bitmap(shredWidth, shredHeight);
-            int[] vertSliceMeans = new int[vertSlice];
-            int[] horSliceMeans = new int[horSlice];
+            int shredWidth = (int)((input.Width / (vertSlice + 1)) + maxDimension * 0.06);
+            int shredHeight = (int)((input.Height / (horSlice + 1)) + maxDimension * 0.06);
+            int[] vertSliceMeans = new int[vertSlice + 1];
+            int[] horSliceMeans = new int[horSlice + 1];
+            vertSliceMeans[0] = 0;
+            horSliceMeans[0] = 0;
 
             for (int i = 1; i <= vertSlice; i++)
             {
-                vertSliceMeans[i - 1] = i * (input.Width / (vertSlice + 1));
+                vertSliceMeans[i] = i * (input.Width / (vertSlice + 1));
             }
 
             for (int i = 1; i <= horSlice; i++)
             {
-                horSliceMeans[i - 1] = i * (input.Height / (horSlice + 1));
+                horSliceMeans[i] = i * (input.Height / (horSlice + 1));
             }
 
             for (int i = 0; i < vertSlice + 1; i++)
             {
                 for (int j = 0; j < horSlice + 1; j++)
                 {
+                    Bitmap shred = new Bitmap(shredWidth, shredHeight);
                     shreds[i, j] = shred;
                 }
             }
@@ -245,9 +249,57 @@ namespace shredder_simulator
             {
                 for (int i = 0; i < input.Width; i++)
                 {
+                    //determine which horizontal shred this belongs to
+                    int thisHor;
+                    Color color = sliceMap.GetPixel(i, j);
+                    thisHor = color.G;
 
+                    //determine which vertical shred this belongs to
+                    int thisVert;
+                    color = sliceMap2.GetPixel(i, j);
+                    thisVert = color.B;
+
+                    //find location of this pixel in shred
+                    int horizontalOffset = (int)(maxDimension * 0.03) + i - vertSliceMeans[thisHor];
+                    int verticalOffset = (int)(maxDimension * 0.03) + j - horSliceMeans[thisVert];
+
+                    shreds[thisHor, thisVert].SetPixel(horizontalOffset, verticalOffset, input.GetPixel(i, j));
                 }
             }
+
+
+            //overlay slices onto pink background
+            int horSpacing = (int)(1.5 * shredWidth);
+            int vertSpacing = (int)(1.5 * shredHeight);
+            Bitmap pinkTile = new Bitmap(shredder_simulator.Properties.Resources.pink_tile);
+            Bitmap background = new Bitmap((int)(horSpacing * (vertSlice + 2)), (int)(vertSpacing * (horSlice + 2)));
+
+            using (var graphics = Graphics.FromImage(background))
+            {
+                //tile the genuine pink paper image over background
+                for (int i = 0; i < background.Width; i += pinkTile.Width)
+                {
+                    for (int j = 0; j < background.Height; j += pinkTile.Height)
+                    {
+                        graphics.DrawImage(pinkTile, new Point(i,j));
+                    }
+                }
+
+                //draw shreds onto background
+                for (int i = horSpacing; i < background.Width; i += horSpacing)
+                {
+                    int horIndex = (int)(i / horSpacing) - 1;
+
+                    for (int j = vertSpacing; j < background.Height; j += vertSpacing)
+                    {
+                        int vertIndex = (int)(j / vertSpacing) - 1;
+
+                        graphics.DrawImage(shreds[horIndex, vertIndex], i, j);
+                    }
+                }
+            }
+
+            background.Save(folderDest + "\\shredder_output.png");
         }
     }
 }
