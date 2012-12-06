@@ -19,6 +19,9 @@ Change Line 43 of "jagged line generator" to change where the result of the prog
 
 Shredder Simulator
 
-currently a work in progress.  The program as it is will create a bitmap called sliceMap that marks the regions to be 
-segmented.  The segmentation itself is the next thing to be done.  Then the addition of tapered transparency and the
-layout of the pieces on top of the tiled pink background taken from the real data.
+This is a C# program with a windows forms gui to accept input file, file destination, and slice parameters.
+As of now, the only slice parameters are just number of horizontal and vertical slices.
+
+The shred simulater uses the code from the jagged line generator to generate jagged lines that correspond to slices.
+The input image is then segmented based on these jagged lines.  These segmented 'shreds' are then overlayed on top of a
+genuine pink background.  This pink background is made of a tiled sample from real scanned pink paper.
