@@ -186,16 +186,6 @@ namespace shredder_simulator
                     }
                 }
             }
-
-            for (int i = 0; i < sliceMap.Width; i++){
-                for (int j = 0; j < sliceMap.Height; j++) {
-                    Color color = sliceMap.GetPixel(i, j);
-                    sliceMap.SetPixel(i, j, Color.FromArgb(255, color.R, color.G, color.B));
-                }
-            }
-
-            sliceMap.Save("C:\\Users\\Jacob\\Pictures\\sliceMap.png");
-            sliceMap2.Save("C:\\Users\\Jacob\\Pictures\\sliceMap2.png");
         }
 
         static List<double> Split(List<double> ys, double displacement, Random random)
@@ -269,10 +259,10 @@ namespace shredder_simulator
 
 
             //overlay slices onto pink background
-            int horSpacing = (int)(1.5 * shredWidth);
-            int vertSpacing = (int)(1.5 * shredHeight);
+            int horSpacing = (int)(1.2 * shredWidth);
+            int vertSpacing = (int)(1.2 * shredHeight);
             Bitmap pinkTile = new Bitmap(shredder_simulator.Properties.Resources.pink_tile);
-            Bitmap background = new Bitmap((int)(horSpacing * (vertSlice + 2)), (int)(vertSpacing * (horSlice + 2)));
+            Bitmap background = new Bitmap((int)(horSpacing * (vertSlice + 3)), (int)(vertSpacing * (horSlice + 1) + horSpacing * 2));
 
             using (var graphics = Graphics.FromImage(background))
             {
@@ -286,13 +276,13 @@ namespace shredder_simulator
                 }
 
                 //draw shreds onto background
-                for (int i = horSpacing; i < background.Width; i += horSpacing)
+                for (int i = horSpacing; i <= horSpacing * (vertSlice + 1); i += horSpacing)
                 {
                     int horIndex = (int)(i / horSpacing) - 1;
 
-                    for (int j = vertSpacing; j < background.Height; j += vertSpacing)
+                    for (int j = horSpacing; j <= horSpacing + vertSpacing * (horSlice); j += vertSpacing)
                     {
-                        int vertIndex = (int)(j / vertSpacing) - 1;
+                        int vertIndex = (int)((j - horSpacing) / vertSpacing);
 
                         graphics.DrawImage(shreds[horIndex, vertIndex], i, j);
                     }
