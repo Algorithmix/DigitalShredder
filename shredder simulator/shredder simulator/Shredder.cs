@@ -39,9 +39,9 @@ namespace shredder_simulator
             }
 
             //make vertical slices
-            double vertDistance = input.Width/(vertSlice + 1);
+            double vertDistance = input.Width / (vertSlice + 1);
             Random random;
-            
+
             for (int i = 1; i <= vertSlice; i++)
             {
                 double MidX = i * vertDistance;
@@ -51,7 +51,7 @@ namespace shredder_simulator
                 {
                     var xs = new List<double>(new double[] { MidX, MidX });
                     double maxDisplacement = maxDimension * 0.0012;
-                    
+
                     while (maxDisplacement >= 1)
                     {
                         xs = Split(xs, maxDisplacement, random);
@@ -125,13 +125,13 @@ namespace shredder_simulator
                 {
                     var ys = new List<double>(new double[] { MidY, MidY });
                     double maxDisplacement = maxDimension * 0.0012;
-                    
+
                     while (maxDisplacement >= 1)
                     {
                         ys = Split(ys, maxDisplacement, random);
                         maxDisplacement *= 0.5;
                     }
-                    
+
                     using (var graphics = Graphics.FromImage(sliceMap2))
                     {
                         Pen redPen = new Pen(Color.FromArgb(255, 1, 0, 0), 1);
@@ -153,12 +153,12 @@ namespace shredder_simulator
             int[] prevHit2 = new int[horSlice + 1];
             for (int ii = 0; ii <= horSlice; ii++)
                 prevHit2[ii] = 99999;
-            
+
             for (int i = 0; i < sliceMap.Width; i++)
             {
                 int sectionIndex = 0;
                 int isInLine = 0;
-                
+
 
                 for (int j = 0; j < sliceMap.Height; j++)
                 {
@@ -271,7 +271,7 @@ namespace shredder_simulator
                 {
                     for (int j = 0; j < background.Height; j += pinkTile.Height)
                     {
-                        graphics.DrawImage(pinkTile, new Point(i,j));
+                        graphics.DrawImage(pinkTile, new Point(i, j));
                     }
                 }
 
