@@ -39,6 +39,7 @@
             this.horUpDown = new System.Windows.Forms.NumericUpDown();
             this.vertLabel = new System.Windows.Forms.Label();
             this.horLabel = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.vertUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.horUpDown)).BeginInit();
             this.SuspendLayout();
@@ -147,12 +148,23 @@
             this.horLabel.TabIndex = 12;
             this.horLabel.Text = "Horizontal slices";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(64, 327);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(143, 17);
+            this.checkBox1.TabIndex = 13;
+            this.checkBox1.Text = "randomize shred location";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // shredsimForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Honeydew;
             this.ClientSize = new System.Drawing.Size(589, 366);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.horLabel);
             this.Controls.Add(this.vertLabel);
             this.Controls.Add(this.horUpDown);
@@ -187,6 +199,7 @@
         private System.Windows.Forms.NumericUpDown horUpDown;
         private System.Windows.Forms.Label vertLabel;
         private System.Windows.Forms.Label horLabel;
+        private System.Windows.Forms.CheckBox checkBox1;
 
     }
 }

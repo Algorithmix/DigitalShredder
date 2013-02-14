@@ -13,10 +13,12 @@ namespace shredder_simulator
         private int vertSlice, horSlice, maxDimension;
         private double maxDisplacement;
         private string folderDest;
+        bool isChecked;
 
 
         public Shredder(shredsimForm Form)
         {
+            isChecked = Form.getCheckBox();
             input = new Bitmap(Form.getImageLocation());
             vertSlice = Form.getVertSlice();
             horSlice = Form.getHorSlice();
@@ -275,6 +277,11 @@ namespace shredder_simulator
                     }
                 }
 
+                if (isChecked)
+                {
+                    Shuffle(shreds, vertSlice + 1, horSlice + 1);
+                }
+
                 //draw shreds onto background
                 for (int i = horSpacing; i <= horSpacing * (vertSlice + 1); i += horSpacing)
                 {
@@ -290,6 +297,38 @@ namespace shredder_simulator
             }
 
             background.Save(folderDest + "\\shredder_output.png");
+        }
+
+        private void Shuffle(Bitmap[,] array, int width, int height)
+        {
+            Bitmap[] oneDim = new Bitmap[width * height];
+
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    oneDim[i * height + j] = array[i, j];
+                }
+            }
+            
+            Random rng = new Random();  
+            int n = oneDim.Count();
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                Bitmap value = oneDim[k];
+                oneDim[k] = oneDim[n];
+                oneDim[n] = value;
+            }
+
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    array[i, j] = oneDim[i * height + j];
+                }
+            }
         }
     }
 }

@@ -68,5 +68,10 @@ namespace shredder_simulator
         {
             return (int)horUpDown.Value;
         }
+
+        public bool getCheckBox()
+        {
+            return (bool)checkBox1.Checked;
+        }
     }
 }
